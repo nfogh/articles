@@ -5,7 +5,7 @@ date:   2024-03-16 10:21:52 +0000
 categories: Testing
 ---
 
-Most companies use the "code coverage" metric to have some indication of how well their code has been tested.
+Most companies use the _code coverage_ metric to have some indication of how well their code has been tested.
 However, as many have pointed out, code coverage is a very poor metric for indicating whether or not your code has
 been tested well.
 
@@ -25,13 +25,18 @@ TEST(MyTest, TestsAbsolutelyNothing)
 }
 {% endhighlight %}
 
-This test will have 100% code coverage of AddOne, but due to the missing expectation, it will not test anything.
+This example is a bit extreme, but in a large legacy code base, situations like this can easily occur. This test will have 100% code coverage of AddOne, but due to the missing expectation, it will not test anything.
 
-Hence, code coverage is not a metric for how much of your code has been tested.
+<div style="text-align:center; padding:20px; font-size:20pt">There is no direct correlation between <i>code coverage</i> and the amount of code that has been tested.</div>
 
-This example is a bit extreme, but in a large legacy code base situations like this can easily occur.
+This doesn't mean that code coverage is a useless metric. Code with a high code coverage tends to be better
+tested than code with a very low code coverage metric.
 
-# 100% code coverage does not ensure well tested code
+# Inconcievable!
+
+The problem is that _code coverage_ is a poor term. The issue stems from the term _coverage_. When you have in
+your head that something is "covered", you immediately think that it has been taken care of (testing wise).
+With code coverage, as we have seen, this is not the truth.
 
 Let's look at a different example:
 
@@ -51,21 +56,15 @@ TEST(MyTest, TestsAbsolutelyNothing)
 }
 {% endhighlight %}
 
-In this test, we still have 100& code coverage, but there is an obvious error in the code still.
+In this test, we still have 100% code coverage, but there is an obvious error in the code still.
 
-In this case, code coverage does mean that we have tested 100% of the code, but we have still tested it poorly.
-
-# Inconcievable!
-
-Code coverage is a poor term. Most people have the notion that if code coverage is high, the code has been tested.
-There is no direct correlation between code coverage and the amount of code that has been tested. As we saw in example 1.
+# Naming is hard
 
 Instead, we should invert the metric, and use "untested code" = 100% - code coverage. Because this is
-actually the only thing we can measure in this way. It tells us how many percent of the code is
-_not_ covered by any automated tests _at all_.
+actually the only thing we can measure in this way. It tells us how many percent of the code has not
+been tested _at all_.
 
 So, where previously your CI tool would report 80% code coverage, now should now report 20% untested code.
 
 Now, having 0% untested code still does not mean that code has been tested well. It could still be tested poorly as in
 the second example. Tests can never prove the absense of errors.
-
