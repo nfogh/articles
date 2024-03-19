@@ -30,7 +30,8 @@ This example is a bit extreme, but in a large legacy code base, situations like 
 <div style="text-align:center; padding:20px; font-size:20pt">There is no direct correlation between <i>code coverage</i> and the amount of code that has been tested.</div>
 
 This doesn't mean that code coverage is a useless metric. Code with a high code coverage tends to be better
-tested than code with a very low code coverage metric.
+tested than code with a very low code coverage metric. But relying on high code coverage can lull us into
+a false sense of security.
 
 # Inconcievable!
 
@@ -41,30 +42,41 @@ With code coverage, as we have seen, this is not the truth.
 Let's look at a different example:
 
 {% highlight cpp %}
-int AddOrSubtract(int in, bool subtract, int value)
+int Add(int in, int value)
 {
-  if (subtract)
-    return in - value;
-  else 
-    return in + 1;
+    return in + value;
 }
 
-TEST(MyTest, TestsAbsolutelyNothing)
+int Subtract(int in, int value)
 {
-  EXPECT_EQ(2, AddOrSubtractOne(1, false, 1));
-  EXPECT_EQ(0, AddOrSubtractOne(1, true, 1));
+  return in - 1;
+}
+
+TEST(MyTest, TestAddAndSubtract)
+{
+  EXPECT_EQ(2, Add(1, 1));
+  EXPECT_EQ(0, Subtract(1, 1));
 }
 {% endhighlight %}
 
-In this test, we still have 100% code coverage, but there is an obvious error in the code still.
+In this test we have added expectations, and still have 100% code coverage. This will suggest that the
+code is tested, but there is an obvious error in the code still.
 
-# Naming is hard
+# Inverting the term
 
-Instead, we should invert the metric, and use "untested code" = 100% - code coverage. Because this is
-actually the only thing we can measure in this way. It tells us how many percent of the code has not
-been tested _at all_.
+Instead, we should invert the metric, and use another term. In lack of a better name, I will use the
+term "Legacy Code". This term, I have borrowed from Michael C. Feathers excellent book "Working Effectively with
+Legacy Code", wherein he describes legacy code as code with no tests. "Legacy code%" is then equal to 
+"100% - code coverage%". And this metric accurately tells us how  many percent of the code has not been 
+tested _at all_.
 
-So, where previously your CI tool would report 80% code coverage, now should now report 20% untested code.
+So, where previously your CI tool would report 80% code coverage, now should now report 20% legacy code.
 
-Now, having 0% untested code still does not mean that code has been tested well. It could still be tested poorly as in
-the second example. Tests can never prove the absense of errors.
+<div style="text-align:center; padding:20px; font-size:20pt">Legacy code% = 100% - code coverage%</div>
+
+Now, having 0% legacy code still does not mean that code has been tested well. It could still be tested 
+poorly as in the second example. So the metric is still fairly flawed. In the end, tests can never prove
+the absense of errors.
+
+However, I believe that getting rid of the word "coverage" will impove peoples understanding of what this
+metric actually means.
