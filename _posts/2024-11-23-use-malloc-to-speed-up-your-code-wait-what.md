@@ -164,12 +164,24 @@ Sanity is restored...
 
 Now, the story is not quite over yet. I have tried to recreate the results i
 found in quick-bench in [Compiler Explorer](https://godbolt.org/z/sG9fYenYd),
-and on my local PC. And even with
-the same compiler settings, and the same source, I cannot recreate the case
-where the non-allocating case is slower than the allocating case.
+and on my local PC.
 
-Even with the same compiler version, only quick-bench insist on generating the
-REP MOVSQ instructions when DoNotOptimize is used.
+Even with the same compiler version and compilation settings, and the same
+source, I cannot recreate the case where the non-allocating case is slower
+than the allocating case. Even when using DoNotOptimize(). In these cases,
+the non-allocating case is basically an empty loop (which it should be).
+
+The issue is also only when using GCC. Clang doesn't have this issue.
+
+I have had a bit of a look into how quick-bench does its benchmarks, and it
+uses docker containers for building and running the benchmarks. The images
+for all the different compilers can be found
+[here](https://hub.docker.com/r/fredtingaud/quick-bench/tags). Spawning one
+of these containers and building the code found in the compiler explorer
+link above will give the same results as I have seen here. I have not had
+time to go much further into why the gcc version in those containers produces
+that assembly, when all other gcc versions I have tried did not. If anyone
+has an idea, please let me know.
 
 # Conclusion
 
