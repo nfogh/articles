@@ -144,7 +144,7 @@ To make a fair comparison, we need to use the following code:
 static void AllocatingStructBM(benchmark::State& state) {
   for (auto _ : state) {
     AllocatingStruct myStruct;
-    benchmark::DoNotOptimize(*myStruct);
+    benchmark::DoNotOptimize(*myStruct.i);
   }
 }
 {% endhighlight %}
