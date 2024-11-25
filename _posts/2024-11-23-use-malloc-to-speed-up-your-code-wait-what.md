@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Use malloc to speed up your code... Wait? What?!"
+title:  "Use malloc to speed up your code... Wait... What?!"
 date:   2024-11-23 10:21:52 +0000
 categories: Performance measurements
 ---
