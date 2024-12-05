@@ -178,14 +178,18 @@ uses docker containers for building and running the benchmarks. The images
 for all the different compilers can be found
 [here](https://hub.docker.com/r/fredtingaud/quick-bench/tags). Spawning one
 of these containers and building the code found in the compiler explorer
-link above will give the same results as I have seen here. I have not had
-time to go much further into why the gcc version in those containers produces
-that assembly, when all other gcc versions I have tried did not. If anyone
-has an idea, please let me know.
+link above will give the same results as I have seen here.
+
+After some investigation, I found out, that the difference is the version of
+google-benchmark used. Versions prior to 1.6.2 had the issue where memory is
+copied. This is due to [this](https://github.com/google/benchmark/issues/1340)
+bug.
+
+If choosing a version of google-benchmark lower than 1.6.2, I can recreate the
+results I got in compiler-explorer.
 
 # Conclusion
 
 There is not much of a conclusion other than the fact that "benchmarking is hard
-to get right". I'm still puzzled as to why the compiler used by quick-bench
-gives assembly that is so different from compiler explorer, with the same
-compiler version. But I haven't had the time to investigate much further.
+to get right". Don't trust synthetic benchmarks, and make sure that what you
+are benchmarking is actually what you mean to be benchmarking.
